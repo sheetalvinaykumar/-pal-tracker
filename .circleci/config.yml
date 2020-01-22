@@ -115,9 +115,6 @@ workflows:
       - deployToReview:
           requires:
           - build
-      - canDeployToProduction:
-          requires:
-           - deployToReview
       - deployToProd:
           requires:
-            - canDeployToProduction
+            - deployToReview
