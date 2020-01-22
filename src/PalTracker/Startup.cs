@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-
+using Steeltoe.CloudFoundry.Connector.MySql.EFCore;
 namespace PalTracker
 {
     public static class CloudFoundryInfoExtensions
@@ -21,9 +21,9 @@ namespace PalTracker
             string memoryLimit = Configuration.GetValue<string>("MEMORY_LIMIT", "MEMORY_LIMIT not configured.");
             string cfInstanceIndex = Configuration.GetValue<string>("CF_INSTANCE_INDEX", "CF_INSTANCE_INDEX not configured.");
             string cfInstanceAddr = Configuration.GetValue<string>("CF_INSTANCE_ADDR", "CF_INSTANCE_ADDR not configured.");
-        
-        
-            CloudFoundryInfo info = new CloudFoundryInfo(port, memoryLimit,cfInstanceIndex, cfInstanceAddr);
+
+
+            CloudFoundryInfo info = new CloudFoundryInfo(port, memoryLimit, cfInstanceIndex, cfInstanceAddr);
             services.AddSingleton(info);
 
             return services;
@@ -44,16 +44,16 @@ namespace PalTracker
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             string message = Configuration.GetValue<string>("WELCOME_MESSAGE", "WELCOME_MESSAGE not configured.");
-
+            services.AddDbContext<TimeEntryContext>(options => options.UseMySql(Configuration));
             services
             .AddSingleton(sp => new WelcomeMessage(message))
             .CloudFoundryInfoConfigureServices(Configuration)
-            .AddSingleton<ITimeEntryRepository,InMemoryTimeEntryRepository>();
+            // .AddSingleton<ITimeEntryRepository, InMemoryTimeEntryRepository>();
+            .AddScoped<ITimeEntryRepository, MySqlTimeEntryRepository>();
 
 
-             
         }
-       
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

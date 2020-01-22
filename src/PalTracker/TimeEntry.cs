@@ -6,13 +6,13 @@ namespace PalTracker
 {
     public struct TimeEntry
     {
-        public long Id { get; set; }
+        public long? Id { get; set; }
         public long ProjectId { get; set; }
         public long UserId { get; set; }
         public DateTime Date { get; set; }
         public int Hours { get; set; }
 
-        public TimeEntry(long id, long projectId, long userId, DateTime date, int hours)
+        public TimeEntry(long? id, long projectId, long userId, DateTime date, int hours)
         {
             Id = id;
             ProjectId = projectId;
@@ -23,7 +23,7 @@ namespace PalTracker
 
         public TimeEntry(long projectId, long userId, DateTime date, int hours)
         {
-            Id = 0;
+            Id = null;
             ProjectId = projectId;
             UserId = userId;
             Date = date;
