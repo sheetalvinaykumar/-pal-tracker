@@ -47,7 +47,9 @@ namespace PalTracker
 
             services
             .AddSingleton(sp => new WelcomeMessage(message))
-            .CloudFoundryInfoConfigureServices(Configuration);
+            .CloudFoundryInfoConfigureServices(Configuration)
+            .AddSingleton<ITimeEntryRepository,InMemoryTimeEntryRepository>();
+
 
              
         }
