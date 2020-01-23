@@ -21,7 +21,7 @@ namespace PalTrackerTests
         [Fact]
         public void HasHealth()
         {
-            var response = _testClient.GetAsync("/actuator/health").Result;
+            var response = _testClient.GetAsync("/health").Result;
             var responseBody = JObject.Parse(response.Content.ReadAsStringAsync().Result);
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
@@ -33,7 +33,7 @@ namespace PalTrackerTests
         [Fact]
         public void HasInfo()
         {
-            var response = _testClient.GetAsync("/actuator/info").Result;
+            var response = _testClient.GetAsync("/info").Result;
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
     }
